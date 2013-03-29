@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html class="formal-specification anolis" lang=en>
+<meta charset=utf-8>
+
+<title>The locale interface</title>
+
+<link rel=stylesheet href="http://suika.suikawiki.org/www/style/html/spec">
+
+<div class="header">
+
+<h1 class="no-toc no-num">The locale interface</h1>
+
+<h2 class="no-toc no-num">Living Standard [DATE]</h2>
+
+<dl class="versions-uri">
+<dt>Latest Version</dt>
+  <dd><code class="URI">&lt;<a href="http://wakaba.github.com/packages/locale-interface/spec"
+      rel=canonical>http://wakaba.github.com/packages/locale-interface/spec</a>&gt;</code></dd>
+<dt>Version History</dt>
+  <dd><code class=URI>&lt;<a href="https://github.com/wakaba/locale-interface/commits/master/spec-src.html">https://github.com/wakaba/locale-interface/commits/master/spec-src.html</a>&gt;</code></dd>
+<dt id=author>Author</dt>
+  <dd><a href="http://www.hatena.com/wakabatan/" rel="author"
+      lang=ja>Wakaba (<a href="http://www.hatena.ne.jp/company/">Hatena</a>)</a>
+  <code class="mail">&lt;<a href="mailto:wakabatan@hatena.ne.jp" rel="author"
+      >wakabatan@hatena.ne.jp</a>&gt;</code></dd>
+</dl>
+
+<p class="copyright" lang="en">&#xA9; 2013 <a
+href="http://www.hatena.com/contact">Hatena</a>.  You are granted a
+license to use, reproduce and create derivative works of this
+document.
+
+</div>
+
+<div class=section id=abstract>
+<h2 class="no-toc no-num">Abstract</h2>
+
+<p>This document defines the interface for locale objects.
+
+</div>
+
+<div id="status" class=section>
+<h2 class="no-toc no-num">Status of this document</h2>
+
+<p class=section-info><em>This section describes the status of this
+document at the time of its publication.  Other documents might
+supersede this document.</em></p>
+
+<p>This document <!--is a <!- - working draft - -> technical
+specification, produced as part of ....  It--> might be updated,
+replaced, or obsoleted by other documents at any time.<!-- It is
+inappropriate to cite this document as other than <q>work in
+progress</q>. -->
+
+<p>Comments on this document are welcome and may be sent to the <a
+href="#author">author</a>.</p>
+
+<p>Translations of thie document might be available.  The English
+version of the document is the only normative version.</p>
+
+</div>
+
+<div class=section>
+<h2 class="no-toc no-num">Table of contents</h2>
+
+<!-- toc -->
+</div>
+
+<div class=section>
+<h2>Introduction</h2>
+
+<p class=section-info><em>This section is non‐normative.</em>
+
+<p class=XXX>This document defines the locale interface.
+
+</div>
+
+<div class=section>
+<h2>Conformance</h2>
+
+<p>The keywords "<em class=rfc2119>MUST</em>", "<em class=rfc2119>MUST
+NOT</em>", "<em class=rfc2119>SHOULD</em>", and "<em
+class=rfc2119>MAY</em>" in the normative parts of this document are to
+be interpreted as described in <a
+href="http://tools.ietf.org/html/rfc2119">RFC 2119</a> <cite
+class="bibref normative">[<a href="#ref-RFC2119">RFC2119</a>]</cite>.
+
+<p>Requirements phrased in the imperative as part of algorithms (such
+as "strip any leading space characters" or "return false and abort
+these steps") are to be interpreted with the meaning of the key word
+("<em class=rfc2119>MUST</em>", "<em class=rfc2119>MAY</em>", etc)
+used in introducing the algorithm.
+
+<p>Conformance requirements phrased as algorithms or specific steps
+<em class=rfc2119>MAY</em> be implemented in any manner, so long as
+the end result is equivalent. (In particular, the algorithms defined
+in this specification are intended to be easy to follow, and not
+intended to be performant.)
+
+<p>User agents <em class=rfc2119>MAY</em> impose
+implementation-specific limits on otherwise unconstrained inputs,
+e.g. to prevent denial of service attacks, to guard against running
+out of memory, or to work around platform-specific limitations.
+
+</div>
+
+<div class=section>
+<h2>The locale interface</h2>
+
+<p>The locale object is expected to expose the set of text message
+identified by message IDs (aka message catalog). How to determine the
+language or other locale characteristics in use depends on the
+implementation of the locale object and outside of the scope of these
+requirements.
+
+<p>The for_text_set method switches the message set in use. The locale
+object specified to the locale method is expected to select the
+default message set. The for_text_set method of the locale object is
+expected to return another locale object which is selecting the
+message set specified by the argument. If the specified value does not
+identify a message set supported by the locale object, the method must
+return an "empty" locale object, i.e. a locale object with no message
+available.
+
+<p>The plain_text method is expected to return the plain text
+representation of the text message corresponding to the message ID
+given as the argument. The method may return the undef value if no
+text message is available for the message ID.
+
+<p>The plain_text_as_components and html_as_components methods are
+expected to return the plain text or HTML representation of the text
+message corresponding to the message ID given as the argument,
+respectively. The plain_text_n_as_components and html_n_as_components
+methods are expected to return plain text or HTML representation of
+the text message corresponding to the message ID and number given as
+the argument, respectively. These two methods are expected to return
+appropriate form of the message depending on the number, e.g. singular
+or plural form.
+
+<p>These four methods are expected to return the "components" data
+structure representing the text message. The return value must be the
+value that can be evaluated as an array reference. The array must
+contain zero or more hash references. Such a hash reference must have
+the type value. If the type value is text, there must be the value
+value, which represents the plain text value for the component. If the
+type value is html, there must be the value value, which represents
+the HTML value for the component. If the type value is field, there
+must be the name value, which represents the name of the field (or
+parameter) for the component. The field component represents the
+argument identified by the field name. The entire components represent
+the concatenation of values represented by each component. No other
+type is allowed at the moment. The html type is not allowed for
+plain_text_as_components and plain_text_n_as_components methods. These
+four method may return the undef value if no text message is available
+for the message ID.
+
+</div>
+
+<div class="section reference">
+<h2 class=no-num>References</h2>
+
+<div class="section reference normative">
+<h3 class=no-num>Normative references</h3>
+
+<dl>
+
+<dt id=ref-RFC2119>RFC2119
+
+<dd><cite><a href="http://tools.ietf.org/html/rfc2119">Key words for
+use in RFCs to Indicate Requirement Levels</a></cite>, Scott Bradner,
+RFC 2119, IETF BCP 14, March 1997.
+
+</dl>
+
+</div>
+
+</div>
