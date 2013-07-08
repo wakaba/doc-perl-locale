@@ -105,6 +105,28 @@ out of memory, or to work around platform-specific limitations.
 </div>
 
 <div class=section>
+<h2>Construction</h2>
+
+<p>This specification does not define how to construct the locale
+object.
+
+<div class="note memo">
+
+<p>For example, a Web application framework can provides the
+<code>$r->locale</code> method, where <code>$r</code> is the request
+context object of the framework, returning the locale object for the
+request.  The locale object is initialized with the language specified
+by the <code>Accept-Language</code> request header.
+
+<p>Likewise, a user object might have the <code>create_locale</code>
+method, which returns a new locale object whose language is set to the
+language specified by the user.
+
+</div>
+
+</div>
+
+<div class=section>
 <h2>The locale interface</h2>
 
 <p>The locale object is expected to expose the set of text message
